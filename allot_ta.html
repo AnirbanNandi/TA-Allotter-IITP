@@ -18,6 +18,17 @@
 <center><h1>Allot TAs</h1></center>
 
 </div>
+<br>
+
+<div class="row">
+    <div class="col text-right">
+    <button type="button" class="btn btn-info" onclick="exportAllotment()" Style="width: 300px;">Export Allotment as CSV</button>
+    </div>
+    <div class="col text-left">
+    <button type="button" class="btn btn-info" onclick="exportRemaining()" Style="width: 300px;">Export list of unallocated TAs as CSV</button>
+    </div>
+</div>
+<br>
 
 <script>
 
@@ -113,6 +124,69 @@
                 }
             }
         }
+    }
+
+    function exportRemaining() {
+        var csv_data = [];
+        var courseArr = sessionStorage.getItem("courseArr").split(",");
+        var taArr = sessionStorage.getItem("taArr").split(",");
+        const ta_per_course = 10;
+        csv_data.push("Unallocated TAs");
+        for(var idx = 0; idx < taArr.length; idx++) {
+            var isfound = false;
+            for(var row = 0; row < courseArr.length; row++) {
+                for(var col = 0; col < ta_per_course; col++) {
+                    var dropdown_id = "dropdown_" + row +"_" + col;
+                    if(document.getElementById(dropdown_id).value == taArr[idx])
+                        isfound = true;
+                }
+            }
+            if(isfound == false)
+                csv_data.push(taArr[idx]);
+        }
+
+        csv_data = csv_data.join('\n');
+        downloadCSVFile(csv_data, "unallocated_TAs.csv");
+        
+    }
+
+    function exportAllotment() {
+        var csv_data = [];
+        var courseArr = sessionStorage.getItem("courseArr").split(",");
+        const ta_per_course = 10;
+        var headers = [];
+        headers.push("Courses");
+        for(var i = 1; i <= ta_per_course; i++) {
+            headers.push("TA " + i);
+        }
+        csv_data.push(headers.join(","));
+        for(var row = 0; row < courseArr.length; row++) {
+            var csvrow = [];
+            csvrow.push(courseArr[row]);
+            for(var col = 0; col < ta_per_course; col++) {
+                var dropdown_id = "dropdown_" + row +"_" + col;
+                csvrow.push(document.getElementById(dropdown_id).value);
+            }
+            csv_data.push(csvrow.join(","));
+        }
+
+        csv_data = csv_data.join('\n');
+        downloadCSVFile(csv_data, "TA_allotment.csv");
+    }
+
+    function downloadCSVFile(csv_data, filename) {
+ 
+        CSVFile = new Blob([csv_data], {
+            type: "text/csv"
+        });
+        var temp_link = document.createElement('a');
+        temp_link.download = filename;
+        var url = window.URL.createObjectURL(CSVFile);
+        temp_link.href = url;
+        temp_link.style.display = "none";
+        document.body.appendChild(temp_link);
+        temp_link.click();
+        document.body.removeChild(temp_link);
     }
 
 </script>
