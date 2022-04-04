@@ -40,6 +40,10 @@
 
 <script>
 
+    window.onload = function(){
+        sessionStorage.clear();
+    }
+
     const myForm = document.getElementById("csv_upload_form");
     const course_csvFile = document.getElementById("course_csvfile");
     const ta_csvFile = document.getElementById("ta_csvfile");
@@ -55,7 +59,6 @@
     }
 
     myForm.addEventListener("submit", function (e) {
-        sessionStorage.clear();
         e.preventDefault();
 
         const course_input = course_csvFile.files[0];
@@ -81,7 +84,7 @@
         };
     
         ta_reader.readAsText(ta_input);
-
+        // sessionStorage.setItem("CS-101_ta_2","1801cs2 - Name_2");
         window.location = "allot_ta.html";
     });
 
