@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Allot TAs</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div id="table_div" class="container">
+<center><h1>Allot TAs</h1></center>
+
+</div>
+
+<script>
+
+    window.onload = function() {
+        const ta_per_course = 10;
+
+        var tbl = document.createElement('table');
+        tbl.setAttribute("class", "table table-striped table-bordered table-hover");
+        
+        var courseArr = sessionStorage.getItem(courseArr);
+        var taArr = sessionStorage.getItem(taArr);
+        
+        var thead = document.createElement('thead');
+        thead.setAttribute("class", "thead-dark");
+        
+        var tr = document.createElement('tr');
+
+        var course_th = document.createElement('th');
+        course_th.setAttribute("scope", "col");
+        course_th.appendChild(document.createTextNode('Course'));
+        tr.appendChild(course_th);
+
+        for(var i = 1; i <= ta_per_course; i++) {
+            var ta_th = document.createElement('th');
+            ta_th.setAttribute("scope", "col");
+            ta_th.appendChild(document.createTextNode('TA ' + i));
+            tr.appendChild(ta_th);
+        }
+
+        thead.appendChild(tr);
+        tbl.appendChild(thead);
+
+        var tbdy = document.createElement('tbody');
+
+        for(var row = 0; row < courseArr.length; row++) {
+            for(var col = 0; col < taArr.length; col++) {
+                var dropdown = document.createElement("SELECT");
+                dropdown.setAttribute("id", "dropdown_" + row +"_" + col);
+                dropdown.setAttribute("class", "form-control");
+                dropdown.setAttribute("onchange", "changeDropdowns()");
+            }
+        }
+
+        tbl.appendChild(tbdy);
+        document.getElementById('table_div').appendChild(tbl);
+
+    }
+
+    function changeDropdowns() {
+
+    }
+
+</script>
+
+
+</body>
+</html>

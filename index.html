@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Load TA and course list</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+<center><h1>Upload list of TAs and Courses</h1></center>
+
+    
+<form enctype="multipart/form-data" name="csv_upload_form" id="csv_upload_form" method="post">
+
+    <div class="form-group">
+        <label class="form-label">Upload CSV for list of courses</label>
+        <input class="form-control form-control-lg" id="course_csvfile" type="file" name="course_csvfile" required>
+    </div>
+
+    <div id = "instructions_course_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of course. The column header should be omitted</div><br>
+    
+    <div class="form-group">
+        <label class="form-label">Upload CSV for list of TAs</label>
+        <input class="form-control form-control-lg" id="ta_csvfile" type="file" name="ta_csvfile" required>
+    </div>
+
+    <div id = "instructions_ta_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of TAs. The column header should be omitted</div><br>
+    
+    <button type="submit" class="btn btn-primary btn-lg" name="submit_csv">Upload file</button>
+    
+</form>
+
+<script>
+
+    const myForm = document.getElementById("csv_upload_form");
+    const course_csvFile = document.getElementById("course_csvfile");
+    const ta_csvFile = document.getElementById("ta_csvfile");
+
+    function csvToArray(str, delimiter = ",") {
+
+        const rows = str.split("\n");
+        const arr = rows.map(function (row) {
+            return row.replace(/\r?\n|\r/g, "");
+        });
+
+        return arr;
+    }
+
+    myForm.addEventListener("submit", function (e) {
+        sessionStorage.clear();
+        e.preventDefault();
+
+        const course_input = course_csvFile.files[0];
+        const ta_input = ta_csvFile.files[0];
+        const course_reader = new FileReader();
+
+        course_reader.onload = function (e) {
+            const text = e.target.result;
+            const data = csvToArray(text);
+            sessionStorage.setItem("courseArr", data);
+            // document.write(JSON.stringify(data));
+        };
+    
+        course_reader.readAsText(course_input);
+        
+        const ta_reader = new FileReader();
+
+        ta_reader.onload = function (e) {
+            const text = e.target.result;
+            const data = csvToArray(text);
+            sessionStorage.setItem("taArr", data);
+            // document.write(JSON.stringify(data));
+        };
+    
+        ta_reader.readAsText(ta_input);
+
+        window.location = "allot_ta.html";
+    });
+
+</script>
+
+</div>
+
+</body>
+</html>

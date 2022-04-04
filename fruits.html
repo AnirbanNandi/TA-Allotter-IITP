@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Select any 3 fruits</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+<center><h2>Select any 3 fruits</h2></center>
+
+<script>
+    function changeMenu(dropdown_id) {
+        element1 = document.getElementById(dropdown_id);
+        var element2 = null;
+        var element3 = null;
+        if(dropdown_id == "dropdown1") {
+            element2 = document.getElementById("dropdown2");
+            element3 = document.getElementById("dropdown3");
+        }
+        if(dropdown_id == "dropdown2") {
+            element2 = document.getElementById("dropdown1");
+            element3 = document.getElementById("dropdown3");
+        }
+        if(dropdown_id == "dropdown3") {
+            element2 = document.getElementById("dropdown2");
+            element3 = document.getElementById("dropdown1");
+        }
+        var value1 = element1.value;
+        var value2 = element2.value;
+        var value3 = element3.value;
+        $("#dropdown1").empty();
+        $("#dropdown2").empty();
+        $("#dropdown3").empty();
+        $("#" + element1.id).append("<option value=''>Select a fruit</option>");
+        $("#" + element2.id).append("<option value=''>Select a fruit</option>");
+        $("#" + element3.id).append("<option value=''>Select a fruit</option>");
+        for(var i = 1; i <= 7; i++) {
+            var fruit_id = "fruit_" + i;
+            var fruit_name = "Fruit " + i;
+            if(fruit_id == value1) {
+                $("#" + element1.id).append("<option value='" + fruit_id + "' selected>" + fruit_name + "</option>");
+            }
+            else if(fruit_id == value2) {
+                $("#" + element2.id).append("<option value='" + fruit_id + "' selected>" + fruit_name + "</option>");
+            }
+            else if(fruit_id == value3) {
+                $("#" + element3.id).append("<option value='" + fruit_id + "' selected>" + fruit_name + "</option>");
+            }
+            else
+            {
+                $("#" + element1.id).append("<option value='" + fruit_id + "'>" + fruit_name + "</option>");
+                $("#" + element2.id).append("<option value='" + fruit_id + "'>" + fruit_name + "</option>");
+                $("#" + element3.id).append("<option value='" + fruit_id + "'>" + fruit_name + "</option>");
+            }
+        }
+
+    }
+</script>
+
+<div class="form-group">
+    <label for="dropdown1">Select fruit 1:</label>
+    <select id="dropdown1" class="form-control" name="dropdown1" onchange="changeMenu('dropdown1');">
+        <option value="">Select a fruit</option>
+        <option value="fruit_1">Fruit 1</option>
+        <option value="fruit_2">Fruit 2</option>
+        <option value="fruit_3">Fruit 3</option>
+        <option value="fruit_4">Fruit 4</option>
+        <option value="fruit_5">Fruit 5</option>
+        <option value="fruit_6">Fruit 6</option>
+        <option value="fruit_7">Fruit 7</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="dropdown2">Select fruit 2:</label>
+    <select id="dropdown2" class="form-control" name="dropdown2" onchange="changeMenu('dropdown2');">
+        <option value="">Select a fruit</option>
+        <option value="fruit_1">Fruit 1</option>
+        <option value="fruit_2">Fruit 2</option>
+        <option value="fruit_3">Fruit 3</option>
+        <option value="fruit_4">Fruit 4</option>
+        <option value="fruit_5">Fruit 5</option>
+        <option value="fruit_6">Fruit 6</option>
+        <option value="fruit_7">Fruit 7</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="dropdown3">Select fruit 3:</label>
+    <select id="dropdown3" class="form-control" name="dropdown3" onchange="changeMenu('dropdown3');">
+        <option value="">Select a fruit</option>
+        <option value="fruit_1">Fruit 1</option>
+        <option value="fruit_2">Fruit 2</option>
+        <option value="fruit_3">Fruit 3</option>
+        <option value="fruit_4">Fruit 4</option>
+        <option value="fruit_5">Fruit 5</option>
+        <option value="fruit_6">Fruit 6</option>
+        <option value="fruit_7">Fruit 7</option>
+    </select>
+</div>
+
+</div>
+
+</body>
+</html>
