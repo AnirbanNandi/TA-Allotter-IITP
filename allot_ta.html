@@ -14,6 +14,18 @@
 
 <body>
 
+<ul class="nav nav-tabs">
+
+    <li class="nav-item">
+        <a class="nav-link" href="index.html">Create New Allotment</a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="load_allotment.html">Modify existing allotment</a>
+    </li>
+
+</ul>
+
 <div id="table_div" >
 <center><h1>Allot TAs</h1></center>
 
@@ -32,8 +44,9 @@
 
 <script>
 
+    const ta_per_course = 10;
     window.onload = function() {
-        const ta_per_course = 10;
+        
 
         var tbl = document.createElement('table');
         tbl.setAttribute("class", "table table-striped table-bordered table-hover");
@@ -101,7 +114,7 @@
         var dropdown_values = [];
         var courseArr = sessionStorage.getItem("courseArr").split(",");
         var taArr = sessionStorage.getItem("taArr").split(",");
-        const ta_per_course = 10;
+        // const ta_per_course = 10;
         for(var row = 0; row < courseArr.length; row++) {
             for(var col = 0; col < ta_per_course; col++) {
                 var dropdown_id = "dropdown_" + row +"_" + col;
@@ -130,7 +143,7 @@
         var csv_data = [];
         var courseArr = sessionStorage.getItem("courseArr").split(",");
         var taArr = sessionStorage.getItem("taArr").split(",");
-        const ta_per_course = 10;
+        // const ta_per_course = 10;
         csv_data.push("Unallocated TAs");
         for(var idx = 0; idx < taArr.length; idx++) {
             var isfound = false;
@@ -153,7 +166,7 @@
     function exportAllotment() {
         var csv_data = [];
         var courseArr = sessionStorage.getItem("courseArr").split(",");
-        const ta_per_course = 10;
+        // const ta_per_course = 10;
         var headers = [];
         headers.push("Courses");
         for(var i = 1; i <= ta_per_course; i++) {

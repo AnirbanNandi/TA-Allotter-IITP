@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-<title>Load TA and course list</title>
+<title>Import CSV</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -17,11 +17,11 @@
 <ul class="nav nav-tabs">
 
     <li class="nav-item">
-        <a class="nav-link active"  aria-current="page" href="index.html">Create New Allotment</a>
+        <a class="nav-link" href="index.html">Create New Allotment</a>
     </li>
     
     <li class="nav-item">
-        <a class="nav-link" href="load_allotment.html">Modify existing allotment</a>
+        <a class="nav-link active" aria-current="page" href="load_allotment.html">Modify existing allotment</a>
     </li>
 
 </ul>
@@ -29,7 +29,7 @@
 <br>
 
 <div class="container">
-<center><h1>Upload list of TAs and Courses</h1></center>
+<center><h1>Import Allotment as CSV</h1></center>
 
     
 <form enctype="multipart/form-data" name="csv_upload_form" id="csv_upload_form" method="post">
@@ -48,13 +48,22 @@
 
     <div id = "instructions_ta_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of TAs. The column header should be omitted</div><br>
     
+    <div class="form-group">
+        <label class="form-label">Upload CSV with existing TA allotment</label>
+        <input class="form-control form-control-lg" id="allotment_csvfile" type="file" name="allotment_csvfile" required>
+    </div>
+
+    <!-- <div id = "instructions_allotment_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of TAs. The column header should be omitted</div><br> -->
+    
     <button type="submit" class="btn btn-primary btn-lg" name="submit_csv">Upload files</button>
     
 </form>
 
 <script>
 
+    const ta_per_course = 10;
     var errorFound = false;
+
     window.onload = function(){
         sessionStorage.clear();
     }
@@ -62,6 +71,7 @@
     const myForm = document.getElementById("csv_upload_form");
     const course_csvFile = document.getElementById("course_csvfile");
     const ta_csvFile = document.getElementById("ta_csvfile");
+    const allotment_csvfile = document.getElementById("allotment_csvfile");
 
     function csvToArray(str, delimiter = ",") {
 
@@ -73,11 +83,68 @@
         return arr;
     }
 
+    function arrayEquals(a, b) {
+        // console.log(a);
+        // console.log(b);
+        return Array.isArray(a) &&
+            Array.isArray(b) &&
+            a.length === b.length &&
+            a.every((val, index) => val === b[index]);
+    }
+
+    function readAllotment(str, delimiter = ",") {
+        var courseArr = sessionStorage.getItem("courseArr").split(",");
+        var taArr = sessionStorage.getItem("taArr").split(",");
+        const rows = str.split("\n");
+        const arr = rows.map(function (row) {
+            return row.replace(/\r?\n|\r/g, "").split(delimiter);
+        });
+
+        if(arr.length == 1 && arr[0] == "" && errorFound == false) {
+            alert("Existing allotment CSV is empty");
+            errorFound = true;
+            location.reload();
+        }
+        // if(((arr.length - 1) !== courseArr.length || 
+        //     arr.slice(1).map(function(row) { return row.slice(0,1); }).sort() !== courseArr.sort()) 
+        //     && errorFound == false) {
+        if(arrayEquals(arr.slice(1).map(function(row) { return row[0]; }).sort().slice(1), courseArr.sort()) == false 
+            && errorFound == false) {
+            alert("List of courses do not match with the courses in existing allotment\r\n" + 
+            "Possible reasons are:\r\n" + 
+            "1) Number of courses are different in the two files\r\n" + 
+            "2) Check if there are courses in the existing allotment which is not present in the list of courses");
+            errorFound = true;
+            location.reload();
+        }
+
+        if((arr[0].length - 1) != ta_per_course && errorFound == false) {
+            alert("Existing allotment doesn't have " + ta_per_course + " TAs per subject");
+            errorFound = true;
+            location.reload();
+        }
+
+        for(var row = 1; row < arr.length; row++) {
+            for(var col = 1; col < arr[row].length; col++) {
+                if(arr[row][col] !== "None") {
+                    if(taArr.includes(arr[row][col]) == false && errorFound == false) {
+                        alert("TA " + arr[row][col] + " not found in the list of TAs. Please verify the existing allotment file");
+                        errorFound = true;
+                        location.reload();
+                    }
+                    sessionStorage.setItem(arr[row][0] + "_ta_" + col, arr[row][col]);
+                }
+                    
+            }
+        }
+    }
+
     myForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
         const course_input = course_csvFile.files[0];
         const ta_input = ta_csvFile.files[0];
+        const allotment_input = allotment_csvfile.files[0];
         const course_reader = new FileReader();
 
         course_reader.onload = function (e) {
@@ -110,6 +177,15 @@
     
         ta_reader.readAsText(ta_input);
         // sessionStorage.setItem("CS-101_ta_2","1801cs2 - Name_2");
+
+        const allotment_reader = new FileReader();
+
+        allotment_reader.onload = function (e) {
+            const text = e.target.result;
+            readAllotment(text);
+        };
+    
+        allotment_reader.readAsText(allotment_input);
         window.location = "allot_ta.html";
     });
 
