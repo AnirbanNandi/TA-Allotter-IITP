@@ -41,12 +41,20 @@
 
     <div id = "instructions_course_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of course. The column header should be omitted</div><br>
     
+    <a href = "sample_courses.csv">
+        <div id = "sample_course" class = "text-danger" style="margin-top: -20px">Click here to download sample_course.csv</div><br>
+    </a>
+
     <div class="form-group">
         <label class="form-label">Upload CSV for list of TAs</label>
         <input class="form-control form-control-lg" id="ta_csvfile" type="file" name="ta_csvfile" required>
     </div>
 
     <div id = "instructions_ta_upload" class = "text-primary">The CSV file should have only one column, i.e., the list of TAs. The column header should be omitted</div><br>
+    
+    <a href = "sample_TA.csv">
+        <div id = "sample_TA" class = "text-danger" style="margin-top: -20px">Click here to download sample_TA.csv</div><br>
+    </a>
     
     <button type="submit" class="btn btn-primary btn-lg" name="submit_csv">Upload files</button>
     
@@ -109,7 +117,6 @@
         };
     
         ta_reader.readAsText(ta_input);
-        // sessionStorage.setItem("CS-101_ta_2","1801cs2 - Name_2");
         window.location = "allot_ta.html";
     });
 
