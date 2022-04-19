@@ -116,7 +116,9 @@
         // if(((arr.length - 1) !== courseArr.length || 
         //     arr.slice(1).map(function(row) { return row.slice(0,1); }).sort() !== courseArr.sort()) 
         //     && errorFound == false) {
-        if(arrayEquals(arr.slice(1).map(function(row) { return row[0]; }).sort().slice(1), courseArr.sort()) == false 
+        // console.log(arr.slice(1).map(function(row) { return row[0]; }).sort());
+        // console.log(courseArr.sort());
+        if(arrayEquals(arr.slice(1).map(function(row) { return row[0]; }).sort(), courseArr.sort()) == false 
             && errorFound == false) {
             alert("List of courses do not match with the courses in existing allotment\r\n" + 
             "Possible reasons are:\r\n" + 
